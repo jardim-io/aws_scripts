@@ -1,0 +1,16 @@
+#!/bin/sh
+
+. .env
+
+echo "[AWS] [RDS] Creating instance $AWS_DB_INSTANCE_ID..."
+
+aws rds create-db-instance \
+  --db-instance-identifier "$AWS_DB_INSTANCE_ID" \
+  --db-instance-class "$AWS_DB_INSTANCE_CLASS" \
+  --engine "$AWS_DB_INSTANCE_ENGINE" \
+  --allocated-storage "$AWS_DB_ALLOCATED_STORAGE" \
+  --master-username "$AWS_DB_MASTER_USERNAME" \
+  --master-user-password "$AWS_DB_MASTER_PASSWORD" \
+  --backup-retention-period "$AWS_DB_RETENTION_PERIOD" \
+  --region "$AWS_REGION" \
+  --no-cli-pager

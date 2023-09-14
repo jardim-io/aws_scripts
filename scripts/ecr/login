@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. .env
+
+user=AWS
+password=$(aws ecr get-login-password --region us-east-1)
+
+docker login -u "$user" -p "$password" "$ECR_HOST"

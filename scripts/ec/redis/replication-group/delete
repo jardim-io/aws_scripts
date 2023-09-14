@@ -1,0 +1,7 @@
+#!/bin/sh
+
+. .env
+
+aws elasticache delete-replication-group \
+  --replication-group-id "$AWS_REPLICATION_GROUP_ID" \
+  --no-cli-pager

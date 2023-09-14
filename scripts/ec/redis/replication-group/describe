@@ -1,0 +1,9 @@
+#!/bin/sh
+
+. .env
+
+aws elasticache describe-replication-groups \
+  --replication-group-id "$AWS_REPLICATION_GROUP_ID" \
+  --query "ReplicationGroups[0].ConfigurationEndpoint.Address" \
+  --output text \
+  --no-cli-pager

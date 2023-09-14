@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. .env
+
+aws rds describe-db-instances \
+  --db-instance-identifier "$AWS_DB_INSTANCE_ID" \
+  --query "DBInstances[*].Endpoint.Address" \
+  --no-cli-pager

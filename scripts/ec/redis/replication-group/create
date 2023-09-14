@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Create replication group. This command will create a replication group with
+# the below parameters. These parameters are environment variables that are
+# loaded from the local .env file.
+#
+# Congigurable parameters:
+# - REPLICATION_GROUP_ID
+# - REPLICATION_GROUP_DESCRIPTION
+# - REPLICATION_CACHE_NODE_TYPE
+# - REPLICATION_ENGINE
+# - REPLICATION_CACHE_PARAMETER_GROUP_NAME
+# - REPLICATION_CACHE_NUMBER_OF_CLUSTERS
+
+. .env
+
+aws elasticache create-replication-group \
+    --replication-group-id "$AWS_REPLICATION_GROUP_ID" \
+    --replication-group-description "$AWS_REPLICATION_GROUP_DESCRIPTION" \
+    --cache-node-type "$AWS_REPLICATION_CACHE_NODE_TYPE" \
+    --engine "$AWS_REPLICATION_ENGINE" \
+    --cache-parameter-group-name "$AWS_REPLICATION_CACHE_PARAMETER_GROUP_NAME" \
+    --num-cache-clusters "$AWS_REPLICATION_CACHE_NUMBER_OF_CLUSTERS" \
+    --no-cli-pager
