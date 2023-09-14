@@ -1,6 +1,6 @@
 require "aws_scripts/version"
 
-require "aws_script_manager/railtie" if defined?(Rails)
+require "aws_scripts/railtie" if defined?(Rails)
 
 module AwsScripts
   class Error < StandardError; end
