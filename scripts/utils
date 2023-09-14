@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function check_aws_cli_installed {
+  if ! command -v aws &> /dev/null; then
+    echo "AWS CLI is not installed. Please install it first."
+    exit 1
+  fi
+}
+
+function check_helm_installed {
+  if ! command -v aws &> /dev/null; then
+    echo "Helm could not be found. Please install it first."
+    exit 1
+  fi
+}

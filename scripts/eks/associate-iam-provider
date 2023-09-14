@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. .env
+
+eksctl utils associate-iam-oidc-provider \
+  --region "$AWS_REGION" \
+  --cluster "$EKS_CLUSTER_NAME" \
+  --approve

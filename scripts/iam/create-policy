@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. .env
+
+aws --region us-east-1 --query Policy.Arn --output text iam create-policy --policy-name $POLICY_NAME --policy-document '{
+    "Version": "2012-10-17",
+    "Statement": [ {
+        "Effect": "Allow",
+        "Action": ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"],
+        "Resource": ["arn:*:secretsmanager:*:*:secret:JardimSecret-??????"]
+    } ]
+}'

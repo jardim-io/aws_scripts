@@ -1,0 +1,14 @@
+#!/bin/sh
+
+. .env
+
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI
+
+AWS_PROFILE=eksadmin eksctl create cluster \
+  --name "$EKS_CLUSTER_NAME" \
+  --version "$EKS_CLUSTER_VERSION" \
+  --region "$AWS_REGION" \
+  --nodegroup-name "$EKS_NODE_GROUP_NAME" \
+  --node-type "$EKS_NODE_TYPE" \
+  --nodes "$EKS_NODE_COUNT" \
+  --zones "$EKS_ZONES"

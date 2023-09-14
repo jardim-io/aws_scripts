@@ -1,0 +1,9 @@
+#!/bin/sh
+
+. .env
+
+aws rds describe-db-instances \
+  --db-instance-identifier "$AWS_DB_INSTANCE_ID" \
+  --query 'DBInstances[0].DBInstanceStatus' \
+  --output text \
+  --no-cli-pager

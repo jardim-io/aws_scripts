@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. .env
+
+aws rds delete-db-instance \
+  --db-instance-identifier "$AWS_DB_INSTANCE_ID" \
+  --skip-final-snapshot \
+  --no-cli-pager
