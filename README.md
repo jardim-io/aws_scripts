@@ -21,6 +21,7 @@ Or install it yourself as:
 Then run the copy scripts task:
 
     $ rails aws_scripts:copy_scripts
+
 ## Usage
 
 Check out the wiki for usage information.
