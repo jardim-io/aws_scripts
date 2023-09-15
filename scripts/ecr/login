@@ -1,8 +1,16 @@
-#!/bin/sh
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_aws_cli_installed
+check_docker_installed
 
 . .env
 
 user=AWS
-password=$(aws ecr get-login-password --region us-east-1)
+password=$(aws ecr get-login-password --region "$AWS_REGION")
 
 docker login -u "$user" -p "$password" "$ECR_HOST"

@@ -1,4 +1,12 @@
 #!/bin/bash
+
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_docker_installed
+
 args=()
 
 while test $# -gt 0; do
@@ -8,6 +16,7 @@ while test $# -gt 0; do
         esac
         shift
 done
+
 set -- "${args[@]}"
 
 . .env
