@@ -1,0 +1,71 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_aws_cli_installed
+
+# Function to clean up resources in case of failure
+cleanup() {
+  echo "[UTILS] [REDIS] An error occurred. Deleting RDS instance..."
+  ./bin/aws/ec/redis/replication-group/delete
+}
+
+# Trap any error, and call our cleanup function
+trap cleanup ERR
+
+# Source .env file
+. .env
+
+# ----------------------------------------------------------------------------
+# Create RDS instance
+# ----------------------------------------------------------------------------
+
+echo "[UTILS] [REDIS] Running Redis creation script for $REPLICATION_GROUP_ID..."
+
+./bin/aws/ec/redis/replication-group/create
+
+# ----------------------------------------------------------------------------
+# Wait for Redis instance to be available
+# ----------------------------------------------------------------------------
+
+REPLICATION_GROUP_STATUS=""
+
+while [ "$REPLICATION_GROUP_STATUS" != "available" ]; do
+    echo "[UTILS] [REDIS] Waiting for Redis instance to be available..."
+
+    REPLICATION_GROUP_STATUS=$(./bin/aws/ec/redis/replication-group/status)
+
+    sleep 10
+done
+
+echo "[UTILS] [REDIS] The Redis instance is available."
+
+REPLICATION_GROUP_ADDRESS=$(./bin/aws/ec/redis/replication-group/describe)
+
+echo "[UTILS] [REDIS] The Address of the Redis instance is: $REPLICATION_GROUP_ADDRESS"
+
+# ----------------------------------------------------------------------------
+# Update .env file with RDS instance ARN
+# ----------------------------------------------------------------------------
+
+ENV_FILE=".env"
+KEY_TO_REPLACE="REPLICATION_GROUP_ADDRESS"
+
+# Check if key exists in .env file
+if grep -q "$KEY_TO_REPLACE" $ENV_FILE; then
+  # Key found, so update it
+  echo "[UTILS] [REDIS] Updating .env file with RDS instance ARN..."
+  sed -i '.bak' "s/^$KEY_TO_REPLACE=.*/$KEY_TO_REPLACE=$REPLICATION_GROUP_ADDRESS/" $ENV_FILE
+else
+  # Key not found, so append it
+  echo "[UTILS] [REDIS] Appending .env file with RDS instance ARN..."
+  echo "$KEY_TO_REPLACE=$REPLICATION_GROUP_ADDRESS" >> $ENV_FILE
+fi
+
+echo "[UTILS] [REDIS] Updated .env file with Redis address: $REPLICATION_GROUP_ADDRESS"
+
+# Remove the trap since everything was successful
+trap - ERR

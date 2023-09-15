@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_aws_cli_installed
+check_helm_installed
+
+# Function to clean up resources in case of failure
+cleanup() {
+  echo "[UTILS] [EKS] An error occurred."
+}
+
+# Trap any error, and call our cleanup function
+trap cleanup ERR
+
+# Source .env file
+. .env
+
+# 1. Create cluster
+./bin/aws/eks/cluster/create
+
+# 2. Setup secrets
+./bin/aws/eks/setup-secrets
+
+# 3. Apply deployments
+# kubectl apply -f deployment/secrets.yml
+# kubectl apply -f deployment/sidekiq.yml
+# kubectl apply -f deployment/app.yml
