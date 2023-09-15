@@ -18,6 +18,10 @@ Or install it yourself as:
 
     $ gem install aws_scripts
 
+Then run the copy scripts task:
+
+    $ rails aws_scripts:copy_scripts
+
 ## Usage
 
 Check out the wiki for usage information.
