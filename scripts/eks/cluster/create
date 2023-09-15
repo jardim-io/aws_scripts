@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_eksctl_installed
 
 . .env
 

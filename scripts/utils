@@ -2,14 +2,21 @@
 
 function check_aws_cli_installed {
   if ! command -v aws &> /dev/null; then
-    echo "AWS CLI is not installed. Please install it first."
+    echo "AWS CLI is not installed. Please install it first. https://aws.amazon.com/cli/"
     exit 1
   fi
 }
 
 function check_helm_installed {
-  if ! command -v aws &> /dev/null; then
-    echo "Helm could not be found. Please install it first."
+  if ! command -v helm &> /dev/null; then
+    echo "hl could not be found. Please install it first. https://helm.sh/"
+    exit 1
+  fi
+}
+
+function check_eksctl_installed {
+  if ! command -v eksctl &> /dev/null; then
+    echo "eksctl could not be found. Please install it first. https://eksctl.io/"
     exit 1
   fi
 }
