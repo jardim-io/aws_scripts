@@ -2,6 +2,8 @@
 
 . .env
 
+. $AWS_SCRIPTS_BASE_DIR/aws/utils
+
 set_log_context "[UTILS] [EC] [REPLICATION GROUP]"
 
 info "Deleting elasticache replication group."

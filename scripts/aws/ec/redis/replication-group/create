@@ -3,11 +3,11 @@
 set -e
 set -o pipefail
 
-. ./bin/aws/utils
+. .env
+
+. $AWS_SCRIPTS_BASE_DIR/aws/utils
 
 check_aws_cli_installed
-
-. .env
 
 set_log_context "[UTILS] [EKS]"
 
