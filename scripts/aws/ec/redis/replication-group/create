@@ -1,24 +1,39 @@
-#!/bin/sh
+#!/bin/bash
 
-# Create replication group. This command will create a replication group with
-# the below parameters. These parameters are environment variables that are
-# loaded from the local .env file.
-#
-# Congigurable parameters:
-# - REPLICATION_GROUP_ID
-# - REPLICATION_GROUP_DESCRIPTION
-# - REPLICATION_CACHE_NODE_TYPE
-# - REPLICATION_ENGINE
-# - REPLICATION_CACHE_PARAMETER_GROUP_NAME
-# - REPLICATION_CACHE_NUMBER_OF_CLUSTERS
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_aws_cli_installed
 
 . .env
 
-aws elasticache create-replication-group \
-    --replication-group-id "$AWS_REPLICATION_GROUP_ID" \
-    --replication-group-description "$AWS_REPLICATION_GROUP_DESCRIPTION" \
-    --cache-node-type "$AWS_REPLICATION_CACHE_NODE_TYPE" \
-    --engine "$AWS_REPLICATION_ENGINE" \
-    --cache-parameter-group-name "$AWS_REPLICATION_CACHE_PARAMETER_GROUP_NAME" \
-    --num-cache-clusters "$AWS_REPLICATION_CACHE_NUMBER_OF_CLUSTERS" \
-    --no-cli-pager
+echo "[UTILS] [EKS] Creating elasticache replication group." >&2
+
+cmd="aws elasticache create-replication-group"
+
+# Use parameter expansion to get values from environment or default
+replication_group_id="${AWS_REPLICATION_GROUP_ID:-}"
+replication_group_description="${AWS_REPLICATION_GROUP_DESCRIPTION:-}"
+cache_node_type="${AWS_REPLICATION_CACHE_NODE_TYPE:-}"
+engine="${AWS_REPLICATION_ENGINE:-}"
+cache_parameter_group_name="${AWS_REPLICATION_CACHE_PARAMETER_GROUP_NAME:-}"
+num_cache_clusters="${AWS_REPLICATION_CACHE_NUMBER_OF_CLUSTERS:-}"
+cache_subnet_group_name="${CACHE_SUBNET_GROUP_NAME:-}"
+security_group_ids="${SECURITY_GROUP_IDS:-}"
+
+[[ -n "$replication_group_id" ]] && cmd+=" --replication-group-id \"$replication_group_id\""
+[[ -n "$replication_group_description" ]] && cmd+=" --replication-group-description \"$replication_group_description\""
+[[ -n "$cache_node_type" ]] && cmd+=" --cache-node-type \"$cache_node_type\""
+[[ -n "$engine" ]] && cmd+=" --engine \"$engine\""
+[[ -n "$cache_parameter_group_name" ]] && cmd+=" --cache-parameter-group-name \"$cache_parameter_group_name\""
+[[ -n "$num_cache_clusters" ]] && cmd+=" --num-cache-clusters \"$num_cache_clusters\""
+[[ -n "$cache_subnet_group_name" ]] && cmd+=" --cache-subnet-group-name \"$cache_subnet_group_name\""
+[[ -n "$security_group_ids" ]] && cmd+=" --security-group-ids \"$security_group_ids\""
+
+cmd+=" --no-cli-pager"
+
+eval $cmd
+
+echo "[UTILS] [EKS] Completed creating elasticache replication group." >&2

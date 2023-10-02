@@ -9,6 +9,8 @@ check_eksctl_installed
 
 . .env
 
+echo "[AWS] [EKS] Setting up cluster."
+
 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI
 
 AWS_PROFILE=eksadmin eksctl create cluster \
@@ -19,3 +21,5 @@ AWS_PROFILE=eksadmin eksctl create cluster \
   --node-type "$EKS_NODE_TYPE" \
   --nodes "$EKS_NODE_COUNT" \
   --zones "$EKS_ZONES"
+
+echo "[AWS] [EKS] Completed setting up cluster."

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "[RUNNER] [EKS] Creating elasticache subnet group."
+
+export VPC_ID=$(./bin/aws/ec2/vpcs/describe)
+export EKS_SUBNET_ID=$(./bin/aws/ec2/subnets/describe)
+export EC_SUBNET_GROUP_NAME="${EKS_CLUSTER_NAME}-subnet-group"
+export EC_SUBNET_GROUP_DESCRIPTION="Subnet group for ${EKS_CLUSTER_NAME}"
+export SUBNET_IDS="${EKS_SUBNET_ID}"
+
+./bin/aws/eks/subnet-group/create
+
+echo "[RUNNER] [EKS] Elasticache subnet group created."

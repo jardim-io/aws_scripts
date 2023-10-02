@@ -1,0 +1,22 @@
+#!/bin/bash
+
+DELETE_OUTPUT=$(./bin/aws/ec/redis/replication-group/delete 2>&1) || true
+
+if echo "$DELETE_OUTPUT" | grep -q "ReplicationGroupNotFoundFault"; then
+  echo "[RUNNERS] [EKS] Replication group does not exist."
+else
+  REPLICATION_GROUP_STATUS=""
+
+  while [ "$REPLICATION_GROUP_STATUS" != *"ReplicationGroupNotFoundFault"* ]; do
+    REPLICATION_GROUP_STATUS=$(bin/aws/ec/redis/replication-group/status 2>&1) || true
+
+    if echo "$REPLICATION_GROUP_STATUS" | grep -q "ReplicationGroupNotFoundFault"; then
+      break
+    else
+      echo "[RUNNERS] [EKS] Waiting for redis cluster to be deleted..."
+      sleep 10
+    fi
+  done
+
+  echo "[RUNNERS] [EKS] Redis cluster has been deleted."
+fi

@@ -1,29 +1,56 @@
 #!/bin/bash
 
 function check_aws_cli_installed {
+  echo "[UTILS] Checking AWS CLI is installed." >&2
+
   if ! command -v aws &> /dev/null; then
-    echo "AWS CLI is not installed. Please install it first. https://aws.amazon.com/cli/"
+    echo "AWS CLI is not installed. Please install it first. https://aws.amazon.com/cli/" >&2
     exit 1
   fi
+
+  echo "[UTILS] Confirmed AWS CLI is installed." >&2
 }
 
 function check_helm_installed {
+  echo "[UTILS] Checking Helm is installed." >&2
+
   if ! command -v helm &> /dev/null; then
-    echo "hl could not be found. Please install it first. https://helm.sh/"
+    echo "hl could not be found. Please install it first. https://helm.sh/" >&2
     exit 1
   fi
+
+  echo "[UTILS] Confirmed Helm is installed." >&2
+}
+
+function check_kubectl_installed {
+  echo "[UTILS] Checking kubectl is installed." >&2
+
+  if ! command -v helm &> /dev/null; then
+    echo "kubectl could not be found. Please install it first. https://kubernetes.io/docs/reference/kubectl/" >&2
+    exit 1
+  fi
+
+  echo "[UTILS] Confirmed kubectl is installed." >&2
 }
 
 function check_eksctl_installed {
+  echo "[UTILS] Checking eksctl is installed." >&2
+
   if ! command -v eksctl &> /dev/null; then
-    echo "eksctl could not be found. Please install it first. https://eksctl.io/"
+    echo "eksctl could not be found. Please install it first. https://eksctl.io/" >&2
     exit 1
   fi
+
+  echo "[UTILS] Confirmed eksctl is installed." >&2
 }
 
 function check_docker_installed {
+  echo "[UTILS] Checking docker is installed." >&2
+
   if ! command -v docker &> /dev/null; then
-    echo "Docker could not be found. Please install it first. https://www.docker.com/"
+    echo "Docker could not be found. Please install it first. https://www.docker.com/" >&2
     exit 1
   fi
+
+  echo "[UTILS] Confirmed docker is installed." >&2
 }

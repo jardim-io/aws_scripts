@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_aws_cli_installed
+
+. .env
+
+echo "[UTILS] [EKS] Creating elasticache subnet group." >&2
+
+cmd="aws elasticache create-cache-subnet-group"
+
+cache_subnet_group_name="${EC_SUBNET_GROUP_NAME:-}"
+cache_subnet_group_description="${EC_SUBNET_GROUP_DESCRIPTION:-}"
+subnet_ids="${SUBNET_IDS:-}"
+
+[[ -n "$cache_subnet_group_name" ]] && cmd+=" --cache-subnet-group-name \"$cache_subnet_group_name\""
+[[ -n "$cache_subnet_group_description" ]] && cmd+=" --cache-subnet-group-description \"$cache_subnet_group_description\""
+[[ -n "$subnet_ids" ]] && cmd+=" --subnet-ids \"$subnet_ids\""
+
+cmd+=" --no-cli-pager"
+
+eval $cmd
+
+echo "[UTILS] [EKS] Completed creating elasticache subnet group." >&2

@@ -2,6 +2,10 @@
 
 . .env
 
+echo "[UTILS] [EC] [REPLICATION GROUP] Deleting elasticache replication group." >&2
+
 aws elasticache delete-replication-group \
   --replication-group-id "$AWS_REPLICATION_GROUP_ID" \
   --no-cli-pager
+
+echo "[UTILS] [EC] [REPLICATION GROUP] Scheduled deleting elasticache replication group." >&2

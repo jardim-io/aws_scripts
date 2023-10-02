@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_aws_cli_installed
+
+. .env
+
+
+echo "[UTILS] [EC2] [Subnets] Describing Subnet for VPC ${VPC_ID}." >&2
+
+aws ec2 describe-subnets \
+  --filter "Name=vpc-id,Values=${VPC_ID}" \
+  --query "Subnets[0].SubnetId" \
+  --output text \
+  --no-cli-pager
