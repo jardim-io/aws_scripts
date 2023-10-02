@@ -9,7 +9,7 @@ set -o pipefail
 
 check_aws_cli_installed
 
-set_log_context "[UTILS] [EKS]"
+set_log_context "[UTILS] [EC]"
 
 info "Creating elasticache replication group."
 
