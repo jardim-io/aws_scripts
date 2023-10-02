@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_aws_cli_installed
+
+. .env
+
+echo "[UTILS] [EC] [SUBNET GROUP] Delete elasticache subnet group. ${AWS_ELASTICACHE_SUBNET_GROUP_ID}"
+
+aws elasticache delete-cache-subnet-group \
+  --cache-subnet-group-name "$AWS_ELASTICACHE_SUBNET_GROUP_ID" \
+  --no-cli-pager
+
+echo "[UTILS] [EC] [SUBNET GROUP] Deleted elasticache subnet group. ${AWS_ELASTICACHE_SUBNET_GROUP_ID}"

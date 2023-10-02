@@ -1,6 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
-. .env
+set -e
+set -o pipefail
+
+. ./bin/aws/utils
+
+check_helm_installed
+check_kubectl_installed
 
 helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
 helm install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --namespace kube-system
