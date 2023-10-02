@@ -3,11 +3,6 @@
 set -e
 set -o pipefail
 
-. ./bin/aws/utils
-
-check_aws_cli_installed
-check_helm_installed
-
 # Function to clean up resources in case of failure
 cleanup() {
   echo "[UTILS] [EKS] An error occurred."
@@ -19,11 +14,23 @@ trap cleanup ERR
 # Source .env file
 . .env
 
+for var in $(cut -d= -f1 .env); do
+    # If the line starts with # or is empty, skip it
+    if [[ $var =~ ^# ]] || [ -z "$var" ]; then
+        continue
+    fi
+    export "$var"
+done
+
 # 1. Create cluster
 ./bin/aws/eks/cluster/create
 
 # 2. Setup secrets
 ./bin/aws/eks/setup-secrets
+
+# 3. Setup redis
+./bin/runners/eks/create-subnet
+./bin/runners/eks/create-redis-instance
 
 # 3. Apply deployments
 # kubectl apply -f deployment/secrets.yml

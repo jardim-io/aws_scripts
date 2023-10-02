@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+./bin/runners/eks/delete-redis-cluster
+./bin/aws/ec/subnet-groups/delete
+./bin/aws/eks/cluster/delete
