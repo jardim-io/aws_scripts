@@ -9,7 +9,9 @@ check_aws_cli_installed
 
 . .env
 
-echo "[UTILS] [EKS] Creating elasticache replication group." >&2
+set_log_context "[UTILS] [EKS]"
+
+info "Creating elasticache replication group."
 
 cmd="aws elasticache create-replication-group"
 
@@ -36,4 +38,4 @@ cmd+=" --no-cli-pager"
 
 eval $cmd
 
-echo "[UTILS] [EKS] Completed creating elasticache replication group." >&2
+info "Completed creating elasticache replication group."

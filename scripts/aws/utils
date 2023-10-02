@@ -54,3 +54,27 @@ function check_docker_installed {
 
   echo "[UTILS] Confirmed docker is installed." >&2
 }
+
+LOG_CONTEXT=""
+
+log() {
+  local level="$1"
+  shift
+
+  local datetime=$(date +"%Y-%m-%d %H:%M:%S")
+  local message="$@"
+
+  echo "[$datetime] [$level] $LOG_CONTEXT $message" >&2
+}
+
+info() {
+  log "INFO" "$@"
+}
+
+error() {
+  log "ERROR" "$@"
+}
+
+set_log_context() {
+  LOG_CONTEXT="$@"
+}
