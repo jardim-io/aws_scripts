@@ -1,56 +1,90 @@
 #!/bin/bash
 
 function check_aws_cli_installed {
-  echo "[UTILS] Checking AWS CLI is installed." >&2
+  set_log_context "[UTILS]"
+
+  info "Checking AWS CLI is installed."
 
   if ! command -v aws &> /dev/null; then
-    echo "AWS CLI is not installed. Please install it first. https://aws.amazon.com/cli/" >&2
+    error "AWS CLI is not installed. Please install it first. https://aws.amazon.com/cli/"
     exit 1
   fi
 
-  echo "[UTILS] Confirmed AWS CLI is installed." >&2
+  info "Confirmed AWS CLI is installed."
 }
 
 function check_helm_installed {
-  echo "[UTILS] Checking Helm is installed." >&2
+  set_log_context "[UTILS]"
+
+  info "Checking Helm is installed."
 
   if ! command -v helm &> /dev/null; then
-    echo "hl could not be found. Please install it first. https://helm.sh/" >&2
+    error "hl could not be found. Please install it first. https://helm.sh/"
     exit 1
   fi
 
-  echo "[UTILS] Confirmed Helm is installed." >&2
+  info "Confirmed Helm is installed."
 }
 
 function check_kubectl_installed {
-  echo "[UTILS] Checking kubectl is installed." >&2
+  set_log_context "[UTILS]"
+
+  info "Checking kubectl is installed."
 
   if ! command -v helm &> /dev/null; then
-    echo "kubectl could not be found. Please install it first. https://kubernetes.io/docs/reference/kubectl/" >&2
+    error "kubectl could not be found. Please install it first. https://kubernetes.io/docs/reference/kubectl/"
     exit 1
   fi
 
-  echo "[UTILS] Confirmed kubectl is installed." >&2
+  info "Confirmed kubectl is installed."
 }
 
 function check_eksctl_installed {
-  echo "[UTILS] Checking eksctl is installed." >&2
+  set_log_context "[UTILS]"
+
+  info "Checking eksctl is installed."
 
   if ! command -v eksctl &> /dev/null; then
-    echo "eksctl could not be found. Please install it first. https://eksctl.io/" >&2
+    error "eksctl could not be found. Please install it first. https://eksctl.io/"
     exit 1
   fi
 
-  echo "[UTILS] Confirmed eksctl is installed." >&2
+  info "Confirmed eksctl is installed."
 }
 
 function check_docker_installed {
-  echo "[UTILS] Checking docker is installed." >&2
+  set_log_context "[UTILS]"
+
+  info "Checking docker is installed."
 
   if ! command -v docker &> /dev/null; then
-    echo "Docker could not be found. Please install it first. https://www.docker.com/" >&2
+    error "Docker could not be found. Please install it first. https://www.docker.com/"
     exit 1
   fi
 
-  echo "[UTILS] Confirmed docker is installed." >&2
+  info "Confirmed docker is installed."
+}
+
+LOG_CONTEXT=""
+
+log() {
+  local level="$1"
+  shift
+
+  local datetime=$(date +"%Y-%m-%d %H:%M:%S")
+  local message="$@"
+
+  echo "[$datetime] [$level] $LOG_CONTEXT $message" >&2
+}
+
+info() {
+  log "INFO" "$@"
+}
+
+error() {
+  log "ERROR" "$@"
+}
+
+set_log_context() {
+  LOG_CONTEXT="$@"
 }

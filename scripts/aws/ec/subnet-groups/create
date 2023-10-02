@@ -3,19 +3,21 @@
 set -e
 set -o pipefail
 
-. ./bin/aws/utils
+. .env
+
+. $AWS_SCRIPTS_BASE_DIR/aws/utils
 
 check_aws_cli_installed
 
-. .env
+set_log_context "[UTILS] [EC]"
 
-echo "[UTILS] [EKS] Creating elasticache subnet group." >&2
+info "Creating elasticache subnet group."
 
 cmd="aws elasticache create-cache-subnet-group"
 
-cache_subnet_group_name="${EC_SUBNET_GROUP_NAME:-}"
-cache_subnet_group_description="${EC_SUBNET_GROUP_DESCRIPTION:-}"
-subnet_ids="${SUBNET_IDS:-}"
+cache_subnet_group_name="${AWS_EC_SUBNET_GROUP_NAME:-}"
+cache_subnet_group_description="${AWS_EC_SUBNET_GROUP_DESCRIPTION:-}"
+subnet_ids="${AWS_VPC_SUBNET_IDS:-}"
 
 [[ -n "$cache_subnet_group_name" ]] && cmd+=" --cache-subnet-group-name \"$cache_subnet_group_name\""
 [[ -n "$cache_subnet_group_description" ]] && cmd+=" --cache-subnet-group-description \"$cache_subnet_group_description\""
@@ -25,4 +27,4 @@ cmd+=" --no-cli-pager"
 
 eval $cmd
 
-echo "[UTILS] [EKS] Completed creating elasticache subnet group." >&2
+info "Completed creating elasticache subnet group."

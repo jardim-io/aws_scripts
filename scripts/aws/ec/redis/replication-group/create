@@ -3,13 +3,15 @@
 set -e
 set -o pipefail
 
-. ./bin/aws/utils
+. .env
+
+. $AWS_SCRIPTS_BASE_DIR/aws/utils
 
 check_aws_cli_installed
 
-. .env
+set_log_context "[UTILS] [EC]"
 
-echo "[UTILS] [EKS] Creating elasticache replication group." >&2
+info "Creating elasticache replication group."
 
 cmd="aws elasticache create-replication-group"
 
@@ -36,4 +38,4 @@ cmd+=" --no-cli-pager"
 
 eval $cmd
 
-echo "[UTILS] [EKS] Completed creating elasticache replication group." >&2
+info "Completed creating elasticache replication group."

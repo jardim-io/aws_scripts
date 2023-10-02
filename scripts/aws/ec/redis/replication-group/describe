@@ -1,6 +1,17 @@
 #!/bin/sh
 
+set -e
+set -o pipefail
+
 . .env
+
+. $AWS_SCRIPTS_BASE_DIR/aws/utils
+
+check_aws_cli_installed
+
+set_log_context "[UTILS] [EC]"
+
+info "Describing elasticache replication group."
 
 aws elasticache describe-replication-groups \
   --replication-group-id "$AWS_REPLICATION_GROUP_ID" \
